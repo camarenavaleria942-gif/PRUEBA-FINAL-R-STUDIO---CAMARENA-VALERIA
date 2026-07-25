@@ -52,7 +52,7 @@ Los datos provienen del **Banco Central de Reserva del Perú (BCRP)**, a través
  
 | Serie | Código | Descripción | Frecuencia | Periodo |
 |---|---|---|---|---|
-| Tipo de cambio | `PN01210PM` | Promedio del periodo (S/ por US$), Bancario - Promedio | Mensual | Ene-1995 a Jun-2026 |
+| Tipo de cambio nominal| `PN01210PM` | Promedio del periodo (S/ por US$), Bancario - Promedio | Mensual | Ene-1995 a Jun-2026 |
 | Inflación | `PN01271PM` | Índice de Precios al Consumidor de Lima Metropolitana (var% mensual), IPC general | Mensual | Ene-1995 a Jun-2026* |
  
 *\*Serie disponible desde 1949; se utiliza desde 1995 para calzar con el tipo de cambio.*
@@ -71,7 +71,7 @@ El análisis se realizó en R (tidyverse, ggplot2). Se importaron y depuraron am
  
 ## 4. Marco teórico
  
-El fenómeno central de este análisis es el **traspaso cambiario** (*exchange rate pass-through*): la magnitud en que una depreciación de la moneda se traslada a los precios internos, debido al encarecimiento de insumos y bienes importados. La literatura económica señala que este traspaso es más fuerte en economías dolarizadas y con bajo compromiso antiinflacionario del banco central, y más débil cuando existe un ancla de expectativas creíble. En el caso peruano, el BCRP adoptó en 2002 un esquema de **Metas Explícitas de Inflación**, que ancla las expectativas de precios independientemente de los movimientos del tipo de cambio — este marco es la referencia para interpretar los resultados de este trabajo.
+El fenómeno central de este análisis es el **traspaso cambiario** (*exchange rate pass-through*): la magnitud en que una depreciación de la moneda se traslada a los precios internos, debido al encarecimiento de insumos y bienes importados. La literatura económica señala que este traspaso es más fuerte en economías dolarizadas y con bajo compromiso antiinflacionario del banco central, y más débil cuando existe un ancla de expectativas creíble. En el caso peruano, el BCRP adoptó en 2002 un esquema de **Metas Explícitas de Inflación**, que ancla las expectativas de precios independientemente de los movimientos del tipo de cambio, este marco es la referencia para interpretar los resultados de este trabajo.
  
 ---
 
@@ -96,7 +96,7 @@ La inflación promedio fue más alta en los años 90 (0.61%, aún en la etapa fi
  
 Los resultados muestran que sí existe una relación positiva, pero débil y estadísticamente significativa (correlación = 0.108; coeficiente de la regresión = 0.033, p = 0.036), con un poder explicativo muy bajo (R² = 1.2%), lo que indica que el tipo de cambio por sí solo explica muy poco de la variación de la inflación mensual. Este resultado es consistente con la teoría del traspaso cambiario descrita en la sección anterior: cuando la política monetaria es confiable, el traspaso tiende a ser bajo.
  
-Al desagregar la relación por década, se observa que no es constante en el tiempo: en los años 90 la correlación fue incluso negativa (-0.22), un periodo en el que la inflación caía por el propio programa de estabilización post-hiperinflación, sin relación directa con el tipo de cambio; en los 2000 y 2010 la correlación fue prácticamente nula (0.05 y 0.00), coincidiendo con la etapa de mayor estabilidad de precios bajo el esquema de Metas Explícitas de Inflación; y solo en la década de 2020 la relación se hace algo más visible (0.14), en el periodo de mayor volatilidad cambiaria, lo que probablemente refleja shocks externos compartidos —como la pandemia o el alza de tasas internacionales— que movieron ambas variables a la vez, más que un traspaso cambiario directo.
+Al desagregar la relación por década, se observa que no es constante en el tiempo: en los años 90 la correlación fue incluso negativa (-0.22), un periodo en el que la inflación caía por el propio programa de estabilización post-hiperinflación, sin relación directa con el tipo de cambio; en los 2000 y 2010 la correlación fue prácticamente nula (0.05 y 0.00), coincidiendo con la etapa de mayor estabilidad de precios bajo el esquema de Metas Explícitas de Inflación; y solo en la década de 2020 la relación se hace algo más visible (0.14), en el periodo de mayor volatilidad cambiaria, lo que probablemente refleja shocks externos compartidos (como la pandemia o el alza de tasas internacionales) que movieron ambas variables a la vez, más que un traspaso cambiario directo.
  
 Sin embargo, al calcular el intervalo de confianza de la correlación en cada década, **ninguno excluye el cero** (las muestras de 60-120 meses por década son chicas), por lo que estas diferencias entre décadas deben interpretarse con cautela: solo la correlación general, con los 377 meses juntos, es estadísticamente distinta de cero.
  
@@ -104,7 +104,7 @@ Sin embargo, al calcular el intervalo de confianza de la correlación en cada d�
  
 ## 7. Conclusiones
  
-La evidencia respalda un traspaso cambiario bajo y no constante en el tiempo en el Perú, atribuible en gran parte a la credibilidad del régimen monetario peruano. En términos prácticos, esto sugiere que, a diferencia de economías con traspaso cambiario alto, una depreciación puntual del sol no debería traducirse automáticamente en expectativas de fuerte inflación — un resultado consistente con el objetivo del BCRP de anclar las expectativas de precios independientemente de la volatilidad del tipo de cambio.
+La evidencia respalda un traspaso cambiario bajo y no constante en el tiempo en el Perú, atribuible en gran parte a la credibilidad del régimen monetario peruano. En términos prácticos, esto sugiere que, a diferencia de economías con traspaso cambiario alto, una depreciación puntual del sol no debería traducirse automáticamente en expectativas de fuerte inflación, un resultado consistente con el objetivo del BCRP de anclar las expectativas de precios independientemente de la volatilidad del tipo de cambio.
  
 **Limitaciones:** correlación no implica causalidad, y el bajo R² confirma que hay otras variables relevantes (precios internacionales de alimentos y combustibles, expectativas, políticas fiscales) que este análisis bivariado no logra capturar.
  
