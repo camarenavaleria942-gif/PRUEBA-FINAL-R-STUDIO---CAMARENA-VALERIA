@@ -134,4 +134,4 @@ Este hallazgo aporta evidencia empírica concreta sobre el grado de traspaso cam
  
 ## 11. Publicación
  
-Captura de la publicación en LinkedIn/X con el hallazgo principal: *(adjuntar enlace o imagen aquí)*
+Captura de la publicación en LinkedIn/X con el hallazgo principal: *(https://www.linkedin.com/posts/valeria-camarena-aa1850243_rstats-datascience-economaeda-share-7486977306012467200-n_vx/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADx1qxkBfTaGo8_A4Uo9IpKRSZvm0qz713w)*
