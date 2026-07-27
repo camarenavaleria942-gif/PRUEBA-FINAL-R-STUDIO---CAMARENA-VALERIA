@@ -52,14 +52,16 @@ Los datos provienen del **Banco Central de Reserva del Perú (BCRP)**, a través
  
 | Serie | Código | Descripción | Frecuencia | Periodo |
 |---|---|---|---|---|
-| Tipo de cambio nominal| `PN01210PM` | Promedio del periodo (S/ por US$), Bancario - Promedio | Mensual | Ene-1995 a Jun-2026 |
+| Tipo de cambio | `PN01210PM` | Promedio del periodo (S/ por US$), Bancario - Promedio | Mensual | Ene-1995 a Jun-2026 |
 | Inflación | `PN01271PM` | Índice de Precios al Consumidor de Lima Metropolitana (var% mensual), IPC general | Mensual | Ene-1995 a Jun-2026* |
+| Inflación transables | `PN01280PM` | IPC Transables (var% mensual) — bienes susceptibles de comercio internacional | Mensual | Feb-1992 a May-2026 |
+| Inflación no transables | `PN01282PM` | IPC No Transables (var% mensual) — bienes y servicios de precio determinado domésticamente | Mensual | Feb-1992 a May-2026 |
  
-*\*Serie disponible desde 1949; se utiliza desde 1995 para calzar con el tipo de cambio.*
+*\*Series de inflación disponibles desde antes de 1995; se utilizan desde 1995 para calzar con el tipo de cambio.*
  
-**Variables analizadas:** fecha (mes-año), tipo de cambio (S/ por US$), inflación mensual (variación % del IPC) y variación % mensual del tipo de cambio (calculada a partir del nivel del tipo de cambio).
+**Variables analizadas:** fecha (mes-año), tipo de cambio (S/ por US$), inflación mensual (variación % del IPC), variación % mensual del tipo de cambio (calculada), e inflación mensual de bienes transables y no transables (para probar el mecanismo de traspaso cambiario).
  
-> Los archivos originales descargados están en `data/tipo_cambio.csv` y `data/inflacion.csv`.
+> Los archivos originales descargados están en `data/tipo_cambio.csv`, `data/inflacion.csv`, `data/transables.csv` y `data/no_transables.csv`.
  
 ---
  
@@ -71,42 +73,48 @@ El análisis se realizó en R (tidyverse, ggplot2). Se importaron y depuraron am
  
 ## 4. Marco teórico
  
-El fenómeno central de este análisis es el **traspaso cambiario** (*exchange rate pass-through*): la magnitud en que una depreciación de la moneda se traslada a los precios internos, debido al encarecimiento de insumos y bienes importados. La literatura económica señala que este traspaso es más fuerte en economías dolarizadas y con bajo compromiso antiinflacionario del banco central, y más débil cuando existe un ancla de expectativas creíble. En el caso peruano, el BCRP adoptó en 2002 un esquema de **Metas Explícitas de Inflación**, que ancla las expectativas de precios independientemente de los movimientos del tipo de cambio, este marco es la referencia para interpretar los resultados de este trabajo.
+El fenómeno central de este análisis es el **traspaso cambiario** (*exchange rate pass-through*): la magnitud en que una depreciación de la moneda se traslada a los precios internos, debido al encarecimiento de insumos y bienes importados. La literatura económica señala que este traspaso es más fuerte en economías dolarizadas y con bajo compromiso antiinflacionario del banco central, y más débil cuando existe un ancla de expectativas creíble. En el caso peruano, el BCRP adoptó en 2002 un esquema de **Metas Explícitas de Inflación**, que ancla las expectativas de precios independientemente de los movimientos del tipo de cambio este marco es la referencia para interpretar los resultados de este trabajo.
  
 ---
-
+ 
 ## 5. Hallazgos del análisis exploratorio
-
+ 
 El tipo de cambio pasó de S/ 2.18 en enero de 1995 a un promedio de S/ 3.20 en todo el periodo (máximo de S/ 4.11), mostrando una tendencia de depreciación sostenida del sol frente al dólar, con una fase de fuerte alza a fines de los 90, una relativa estabilidad y apreciación entre 2010 y 2013, y un nuevo repunte marcado desde 2020. La inflación mensual, en cambio, se comporta de forma mucho más errática mes a mes (rango de -0.54% a 2.38%, promedio de 0.31%), sin una tendencia definida, concentrada mayormente entre 0% y 1%, con algunos meses atípicos por encima de 1.5%.
-
+ 
 Al comparar ambas variables por década, se observa lo siguiente:
-
+ 
+**Tabla 1.** Tipo de cambio, inflación y volatilidad cambiaria por década
+ 
 | Década | Tipo de cambio promedio (S/) | Inflación promedio (%) | Volatilidad del tipo de cambio (DE) |
 |---|---|---|---|
 | 1990s | 2.73 | 0.61 | 1.07 |
 | 2000s | 3.30 | 0.20 | 1.19 |
 | 2010s | 3.02 | 0.24 | 1.04 |
 | 2020s | 3.69 | 0.34 | 1.62 |
-
+ 
 La inflación promedio fue más alta en los años 90 (0.61%, aún en la etapa final de estabilización post-hiperinflación) y se redujo notablemente a partir de los 2000 tras la adopción del esquema de Metas Explícitas de Inflación del BCRP. La volatilidad del tipo de cambio, en cambio, es claramente más alta en la década de 2020 (desviación estándar de 1.62, frente a 1.0-1.2 en décadas previas), coincidiendo con shocks globales como la pandemia y el alza de tasas de interés internacionales, este es el hallazgo que motiva la pregunta de análisis de la siguiente sección.
-
+ 
+---
+ 
 ## 6. Relación entre el tipo de cambio y la inflación
  
 **Pregunta de análisis:** ¿existe relación entre la depreciación mensual del sol y la inflación mensual en el Perú, y esta relación se mantiene constante en el tiempo?
  
-Los resultados muestran que sí existe una relación positiva, pero débil y estadísticamente significativa (correlación = 0.108; coeficiente de la regresión = 0.033, p = 0.036), con un poder explicativo muy bajo (R² = 1.2%), lo que indica que el tipo de cambio por sí solo explica muy poco de la variación de la inflación mensual. Este resultado es consistente con la teoría del traspaso cambiario descrita en la sección anterior: cuando la política monetaria es confiable, el traspaso tiende a ser bajo.
+Los resultados muestran que sí existe una relación positiva, pero débil y estadísticamente significativa (correlación = 0.108; coeficiente de la regresión = 0.033, p = 0.036), con un poder explicativo muy bajo (R² = 1.2%), lo que indica que el tipo de cambio por sí solo explica muy poco de la variación de la inflación mensual un resultado consistente con la teoría del traspaso cambiario descrita en la sección 4: cuando la política monetaria es confiable, el traspaso tiende a ser bajo. Al desagregar por década, la correlación fue negativa en los 90 (-0.22), un periodo en que la inflación caía por el propio programa de estabilización post-hiperinflación, sin relación directa con el tipo de cambio; prácticamente nula en 2000 y 2010 (0.05 y 0.00), coincidiendo con la etapa de mayor estabilidad de precios bajo el esquema de Metas Explícitas de Inflación; y algo más visible en 2020 (0.14), en el periodo de mayor volatilidad cambiaria, lo que probablemente refleja shocks externos compartidos, como la pandemia o el alza de tasas internacionales, que movieron ambas variables a la vez, más que un traspaso cambiario directo. Sin embargo, al calcular el intervalo de confianza de la correlación en cada década, **ninguno excluye el cero** (las muestras de 60-120 meses por década son chicas): solo la correlación general, con los 377 meses juntos, es estadísticamente distinta de cero.
  
-Al desagregar la relación por década, se observa que no es constante en el tiempo: en los años 90 la correlación fue incluso negativa (-0.22), un periodo en el que la inflación caía por el propio programa de estabilización post-hiperinflación, sin relación directa con el tipo de cambio; en los 2000 y 2010 la correlación fue prácticamente nula (0.05 y 0.00), coincidiendo con la etapa de mayor estabilidad de precios bajo el esquema de Metas Explícitas de Inflación; y solo en la década de 2020 la relación se hace algo más visible (0.14), en el periodo de mayor volatilidad cambiaria, lo que probablemente refleja shocks externos compartidos (como la pandemia o el alza de tasas internacionales) que movieron ambas variables a la vez, más que un traspaso cambiario directo.
- 
-Sin embargo, al calcular el intervalo de confianza de la correlación en cada década, **ninguno excluye el cero** (las muestras de 60-120 meses por década son chicas), por lo que estas diferencias entre décadas deben interpretarse con cautela: solo la correlación general, con los 377 meses juntos, es estadísticamente distinta de cero.
+Esta lectura agregada se confirma, y se explica mejor, al desagregar por tipo de bien: la correlación entre la variación del tipo de cambio y la inflación es más del doble en **bienes transables** (0.175, p = 0.0006, estadísticamente significativa) que en **no transables** (0.062, p = 0.233, no significativa). Esto es exactamente lo que predice la teoría del traspaso cambiario: los bienes transables cuyo precio depende de precios internacionales convertidos a soles, sí trasladan la depreciación a sus precios de forma medible, mientras que los no transables determinados por condiciones domésticas de oferta y demanda, prácticamente no reaccionan al tipo de cambio.
  
 ---
  
 ## 7. Conclusiones
  
-La evidencia respalda un traspaso cambiario bajo y no constante en el tiempo en el Perú, atribuible en gran parte a la credibilidad del régimen monetario peruano. En términos prácticos, esto sugiere que, a diferencia de economías con traspaso cambiario alto, una depreciación puntual del sol no debería traducirse automáticamente en expectativas de fuerte inflación, un resultado consistente con el objetivo del BCRP de anclar las expectativas de precios independientemente de la volatilidad del tipo de cambio.
+El periodo analizado confirma una depreciación sostenida del sol frente al dólar, acompañada de una inflación mensual comparativamente más alta y volátil en los años posteriores a la hiperinflación, que se estabiliza de forma notoria tras la adopción del esquema de Metas Explícitas de Inflación del BCRP (Parte 1). Sobre esa base, la Parte 2 muestra que la relación entre la depreciación del sol y la inflación mensual es positiva pero débil, y no se mantiene constante a lo largo del tiempo: fue negativa durante el proceso de estabilización de los años 90, se volvió prácticamente nula durante la etapa de mayor credibilidad monetaria de los 2000 y 2010, y solo se hace algo más perceptible en el periodo reciente de mayor volatilidad cambiaria.
  
-**Limitaciones:** correlación no implica causalidad, y el bajo R² confirma que hay otras variables relevantes (precios internacionales de alimentos y combustibles, expectativas, políticas fiscales) que este análisis bivariado no logra capturar.
+La evidencia más concluyente, sin embargo, proviene de desagregar la inflación por tipo de bien: el traspaso cambiario resulta considerablemente mayor en los bienes transables que en los no transables, tal como anticipa la teoría económica, los precios ligados a mercados internacionales responden al tipo de cambio en mayor medida que aquellos determinados por condiciones domésticas. Esta distinción aísla el mecanismo económico subyacente y ofrece una evidencia más sólida que la correlación agregada o su variación por década.
+ 
+En conjunto, los resultados sugieren que el Perú exhibe un traspaso cambiario bajo, consistente con la credibilidad de su régimen monetario: una depreciación puntual del sol no debería traducirse en expectativas de inflación generalizada, aunque sí incide de forma medible sobre los precios de bienes vinculados al comercio internacional.
+ 
+**Limitaciones:** la correlación no implica causalidad, y el bajo poder explicativo del modelo indica que otros factores: precios internacionales, expectativas y política fiscal, entre otros también contribuyen a explicar la dinámica de la inflación.
  
 ---
  
