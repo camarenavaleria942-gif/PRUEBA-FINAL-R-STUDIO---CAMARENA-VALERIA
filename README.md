@@ -8,7 +8,7 @@ Prueba para subir trabajo final de r studio
 
 **Estudiante:** Valeria Rania Camarena Serpa
 
-**Fecha:** 25 julio de 2026
+**Fecha:** 26 julio de 2026
 
 ## Resumen ejecutivo
  
